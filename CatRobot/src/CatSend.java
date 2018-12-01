@@ -1,4 +1,5 @@
 import lejos.hardware.Button;
+import lejos.hardware.lcd.LCD;
 import lejos.hardware.Bluetooth;
 import lejos.remote.nxt.NXTCommConnector;
 import lejos.remote.nxt.NXTConnection;
@@ -18,12 +19,12 @@ public class CatSend {
 	public static byte[] data = new byte[2];
 							
 	public static void main(String[] args) throws Exception {
+		
+		LCD.drawString("MoveMode", 0, 1);
 
-		while(Button.getButtons() != esc + right) {
+		while(true) {
 			
-			System.out.println(data[0] + " : " + data[1]);
-			
-			if(Button.getButtons() == esc + enter) //change modes
+			if(Button.getButtons() == esc) //change modes
 				modeChange();
 			else if(Button.getButtons() == up)    //forward - adjust up
 				data[1] = 1;
@@ -48,12 +49,16 @@ public class CatSend {
 	
 	public static void modeChange() {
 			if(data[0] == 0) {
+				LCD.clearDisplay();
+				LCD.drawString("Catapult Mode", 0, 1);
 				data[0] = 1;
 			}else {
+				LCD.clearDisplay();
+				LCD.drawString("Move Mode", 0, 1);
 				data[0] = 0;
 			}
 			data[1] = 0;
-			while(Button.getButtons() == esc + enter);
+			while(Button.getButtons() == esc);
 	}
 
 }
